@@ -3,18 +3,20 @@ const createOrUpdateFile = async (options) => {
     client,
     owner,
     repo,
-    ref,
+    branch,
     file,
     log,
   } = options;
+
+  const message = 'commit message';
 
   const defaultParams = {
     owner,
     repo,
     path: file.path,
-    message: 'commit message',
+    message,
     content: file.content,
-    branch: ref,
+    branch,
   };
 
   const params =
@@ -22,7 +24,7 @@ const createOrUpdateFile = async (options) => {
       owner,
       repo,
       path: file.path,
-      ref,
+      ref: branch,
     }).then(({ data }) => {
       return Promise.resolve({
         ...defaultParams,

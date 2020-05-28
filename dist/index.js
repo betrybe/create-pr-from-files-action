@@ -519,15 +519,15 @@ async function run() {
     const token = core.getInput('token', { required: true });
     const owner = core.getInput('owner');
     const repo = core.getInput('repo');
-    const ref = core.getInput('ref') || github.context.ref;
+    const branch = core.getInput('branch') || github.context.ref;
     const storagePath = core.getInput('storagePath', { required: true });
 
     const client = new github.GitHub(token);
-    const branch = `automation/${ref}`;
+    const newBranch = `automation/${branch}`;
 
     const files = getFilenames(storagePath)
       .map(filename => {
-        const content = fs.readdirSync(filename, 'utf8');
+        const content = fs.readFileSync(filename, 'utf8');
         return {
           path: path.relative(storagePath, filename),
           content: Buffer.from(content).toString('base64'),
@@ -539,7 +539,7 @@ async function run() {
       client,
       owner,
       repo,
-      branch,
+      branch: newBranch,
       log: (msg) => core.info(msg),
     });
 
@@ -548,7 +548,7 @@ async function run() {
         client,
         owner,
         repo,
-        branch,
+        branch: newBranch,
         file,
         log: (msg) => core.info(msg),
       });
@@ -9151,18 +9151,20 @@ const createOrUpdateFile = async (options) => {
     client,
     owner,
     repo,
-    ref,
+    branch,
     file,
     log,
   } = options;
+
+  const message = 'commit message';
 
   const defaultParams = {
     owner,
     repo,
     path: file.path,
-    message: 'commit message',
+    message,
     content: file.content,
-    branch: ref,
+    branch,
   };
 
   const params =
@@ -9170,7 +9172,7 @@ const createOrUpdateFile = async (options) => {
       owner,
       repo,
       path: file.path,
-      ref,
+      ref: branch,
     }).then(({ data }) => {
       return Promise.resolve({
         ...defaultParams,

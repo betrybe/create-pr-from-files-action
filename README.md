@@ -29,7 +29,7 @@ This action accepts the following configuration parameters via `with:`
 
   The name of the GitHub repository you want to create Pull Request
 
-- `ref`
+- `branch`
 
   **Required**
   **Default: `github.ref`**

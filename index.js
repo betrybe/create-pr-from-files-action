@@ -21,11 +21,11 @@ async function run() {
     const token = core.getInput('token', { required: true });
     const owner = core.getInput('owner');
     const repo = core.getInput('repo');
-    const ref = core.getInput('ref') || github.context.ref;
+    const branch = core.getInput('branch') || github.context.ref;
     const storagePath = core.getInput('storagePath', { required: true });
 
     const client = new github.GitHub(token);
-    const branch = `automation/${ref}`;
+    const newBranch = `automation/${branch}`;
 
     const files = getFilenames(storagePath)
       .map(filename => {
@@ -41,7 +41,7 @@ async function run() {
       client,
       owner,
       repo,
-      branch,
+      branch: newBranch,
       log: (msg) => core.info(msg),
     });
 
@@ -50,7 +50,7 @@ async function run() {
         client,
         owner,
         repo,
-        branch,
+        branch: newBranch,
         file,
         log: (msg) => core.info(msg),
       });

@@ -12,7 +12,7 @@ const run = () => {
     client,
     owner: 'my-org',
     repo: 'my-repo',
-    ref: 'heads/my-branch',
+    branch: 'my-branch',
     file: {
       path: 'wait.js',
        content: 'YmxhYmxhYmxhCg==',
@@ -46,7 +46,7 @@ describe('createOrUpdateFile', () => {
     expect(client.repos.getContents).toHaveBeenCalledWith({
       owner: 'my-org',
       repo: 'my-repo',
-      ref: 'heads/my-branch',
+      ref: 'my-branch',
       path: 'wait.js',
     });
     expect(client.repos.createOrUpdateFile).toHaveBeenCalledWith({
@@ -55,7 +55,7 @@ describe('createOrUpdateFile', () => {
       path: 'wait.js',
       message: 'commit message',
       content: 'YmxhYmxhYmxhCg==',
-      branch: 'heads/my-branch',
+      branch: 'my-branch',
     });
     expect(file.content.name).toBe('wait.js');
     expect(file.content.path).toBe('wait.js');
@@ -83,7 +83,7 @@ describe('createOrUpdateFile', () => {
   expect(client.repos.getContents).toHaveBeenCalledWith({
     owner: 'my-org',
     repo: 'my-repo',
-    ref: 'heads/my-branch',
+    ref: 'my-branch',
     path: 'wait.js',
   });
   expect(client.repos.createOrUpdateFile).toHaveBeenCalledWith({
@@ -92,7 +92,7 @@ describe('createOrUpdateFile', () => {
     path: 'wait.js',
     message: 'commit message',
     content: 'YmxhYmxhYmxhCg==',
-    branch: 'heads/my-branch',
+    branch: 'my-branch',
     sha: '88bf17f4a6419d6f0c3b44bfa70c3e572ab938af',
   });
   expect(file.content.name).toBe('wait.js');
