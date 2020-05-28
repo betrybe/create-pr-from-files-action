@@ -559,7 +559,7 @@ async function run() {
       owner,
       repo,
       branch: newBranch,
-      log: (msg) => core.info(msg),
+      log: (msg) => core.debug(msg),
     });
   }
   catch (error) {
@@ -7541,6 +7541,8 @@ const getOrCreatePullRequest = async (options) => {
       head,
       base,
     }).then(result => {
+      log('find PR');
+      log(result);
       const [pullRequest] = result.data;
       return Promise.resolve({
         data: {
@@ -7554,6 +7556,10 @@ const getOrCreatePullRequest = async (options) => {
         title,
         head,
         base,
+      }).then(result => {
+        log('create PR');
+        log(result);
+        return Promise.resolve(result);
       });
     });
 
