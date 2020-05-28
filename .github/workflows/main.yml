@@ -16,7 +16,7 @@ jobs:
         id: test
         uses: betrybe/create-pr-from-files-action@test-pr
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.MY_TOKEN }}
           owner: 'betrybe'
           repo: 'my-target-repo'
           ref: ${{ github.event.pull_request.head.ref }}
