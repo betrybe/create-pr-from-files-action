@@ -1,13 +1,5 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
-inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
-    required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps 
-    description: 'The message to output'
+name: 'Create Pull Request from local files'
+description: 'Create branch and Pull Request from local files'
 runs:
   using: 'node12'
   main: 'dist/index.js'
