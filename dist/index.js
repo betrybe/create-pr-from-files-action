@@ -558,7 +558,7 @@ async function run() {
       client,
       owner,
       repo,
-      branch,
+      branch: newBranch,
       log: (msg) => core.info(msg),
     });
   }
