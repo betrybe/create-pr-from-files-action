@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-18.04
     name: Create PR job
     steps:
+      - uses: actions/checkout@v2
       - name: create pr step
         id: test
         uses: betrybe/create-pr-from-files-action@cria-pr-com-arquivos-locais
