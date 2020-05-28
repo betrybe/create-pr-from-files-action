@@ -4,6 +4,7 @@ const getOrCreatePullRequest = async (options) => {
     owner,
     repo,
     branch,
+    log,
   } = options;
 
   const head = `${owner}:${branch}`;

@@ -10,6 +10,10 @@ const client = {
 const run = () => {
   return getOrCreatePullRequest({
     client,
+    owner: 'my-org',
+    repo: 'my-repo',
+    branch: 'master',
+    log: () => {},
   });
 };
 

@@ -4,6 +4,7 @@ const getOrCreateBranch = async (options) => {
     owner,
     repo,
     branch,
+    log,
   } = options;
 
   const { data: reference } =

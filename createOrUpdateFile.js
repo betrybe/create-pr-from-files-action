@@ -5,6 +5,7 @@ const createOrUpdateFile = async (options) => {
     repo,
     ref,
     file,
+    log,
   } = options;
 
   const defaultParams = {

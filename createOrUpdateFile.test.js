@@ -16,7 +16,8 @@ const run = () => {
     file: {
       path: 'wait.js',
        content: 'YmxhYmxhYmxhCg==',
-    }
+    },
+    log: () => {},
   });
 };
 

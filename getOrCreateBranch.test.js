@@ -13,6 +13,7 @@ const run = () => {
     owner: 'my-org',
     repo: 'my-repo',
     branch: 'master',
+    log: () => {},
   });
 };
 
