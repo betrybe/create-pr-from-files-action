@@ -7,6 +7,42 @@
 
 A GitHub action that create branch and Pull Request from local files and keep it syncronized.
 
+## Inputs
+
+This action accepts the following configuration parameters via `with:`
+
+- `token`
+
+  **Required**
+
+  The GitHub token to use for making API requests
+
+- `owner`
+
+  **Required**
+
+  The owner of the GitHub repository you want to create Pull Request
+
+- `repo`
+
+  **Required**
+
+  The name of the GitHub repository you want to create Pull Request
+
+- `ref`
+
+  **Required**
+  **Default: `github.ref`**
+
+  The name of the branch you want to create Pull Request head to
+
+- `storagePath`
+
+  **Required**
+  **Default: "tmp"**
+
+  Local path to storage base files
+
 ## Example usage
 
 ```yaml

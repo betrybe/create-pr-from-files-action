@@ -1,5 +1,19 @@
 name: 'Create Pull Request from local files'
 description: 'Create branch and Pull Request from local files'
+inputs:
+  token:
+    description: 'The GitHub token to use for making API requests'
+    required: true
+  owner:
+    description: 'The owner of the GitHub repository you want to create Pull Request'
+  repo:
+    description: 'The name of the GitHub repository you want to create Pull Request'
+  branch:
+    description: 'The name of the branch you want to create Pull Request head to'
+  storagePath:
+    description: 'Local path to storage base files'
+    required: true
+    default: 'tmp'
 runs:
   using: 'node12'
   main: 'dist/index.js'
