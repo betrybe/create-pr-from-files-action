@@ -4,12 +4,12 @@ const getOrCreatePullRequest = async (options) => {
     owner,
     repo,
     branch,
+    title,
     log,
   } = options;
 
   const head = `${owner}:${branch}`;
   const base = 'master';
-  const title = 'my-pr';
 
   const { data: pullRequest } =
     await client.pulls.list({

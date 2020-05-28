@@ -8,7 +8,7 @@ const createOrUpdateFile = async (options) => {
     log,
   } = options;
 
-  const message = 'commit message';
+  const message = `Commiting file ${file.path}`;
 
   const defaultParams = {
     owner,
