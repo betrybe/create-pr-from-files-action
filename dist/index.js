@@ -7542,6 +7542,7 @@ const getOrCreatePullRequest = async (options) => {
       base,
     }).then(result => {
       const [pullRequest] = result.data;
+      if (!pullRequest) throw new Error('Empty list of Pull Requests');
       return Promise.resolve({
         data: {
           ...pullRequest

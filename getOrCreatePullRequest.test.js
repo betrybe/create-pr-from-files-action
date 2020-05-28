@@ -22,12 +22,29 @@ describe('getOrCreatePullRequest', () => {
     jest.clearAllMocks();
   });
 
-  it('get already created pull request', async () => {
+  it('match target pull request and return its data', async () => {
     client.pulls.list.mockResolvedValue({
       data: [{
         title: 'My Pull Request title',
         number: 12
       }]
+    });
+
+    const pr = await run();
+    expect(client.pulls.list).toHaveBeenCalled();
+    expect(pr.title).toBe('My Pull Request title');
+    expect(pr.number).toBe(12);
+  });
+
+  it('do no match target pull request and created it', async () => {
+    client.pulls.list.mockResolvedValue({
+      data: []
+    });
+    client.pulls.create.mockResolvedValue({
+      data: {
+        title: 'My Pull Request title',
+        number: 12
+      }
     });
 
     const pr = await run();
