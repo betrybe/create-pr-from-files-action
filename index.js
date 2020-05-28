@@ -61,7 +61,7 @@ async function run() {
       owner,
       repo,
       branch: newBranch,
-      log: (msg) => core.debug(msg),
+      log: (msg) => core.warning(msg),
     });
   }
   catch (error) {
