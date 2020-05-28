@@ -8,7 +8,7 @@ const createOrUpdateFile = require('./createOrUpdateFile');
 const getOrCreatePullRequest = require('./getOrCreatePullRequest');
 
 const getFilenames = (dir) => {
-  core.info(dir);
+  core.debug(dir);
   const subdirs = fs.readdirSync(dir);
   const files = subdirs.map(subdir => {
     const res = path.join(dir, subdir);
@@ -31,7 +31,7 @@ async function run() {
     const files = getFilenames(storagePath)
       .map(filename => {
         const content = fs.readdirSync(filename, 'utf8');
-        core.info(path.relative(storagePath, filename));
+        core.debug(path.relative(storagePath, filename));
         return {
           path: path.relative(storagePath, filename),
           content: Buffer.from(content).toString('base64'),
