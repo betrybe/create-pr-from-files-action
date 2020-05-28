@@ -521,9 +521,11 @@ async function run() {
     const repo = core.getInput('repo');
     const branch = core.getInput('branch') || github.context.ref;
     const storagePath = core.getInput('storagePath', { required: true });
+    const prefixBranch = core.getInput('prefixBranch', { required: true });
 
     const client = new github.GitHub(token);
-    const newBranch = `automation/${branch}`;
+    const newBranch = `${prefixBranch}/${branch}`;
+    const prTitle = `[AUTOMATION] ${branch}`;
 
     const files = getFilenames(storagePath)
       .map(filename => {
@@ -540,8 +542,9 @@ async function run() {
       owner,
       repo,
       branch: newBranch,
-      log: (msg) => core.info(msg),
+      log: (msg) => core.debug(msg),
     });
+    core.debug(`Created branch: ${owner}/${repo}@${newBranch}`);
 
     for (const file of files) {
       await createOrUpdateFile({
@@ -550,17 +553,21 @@ async function run() {
         repo,
         branch: newBranch,
         file,
-        log: (msg) => core.info(msg),
+        log: (msg) => core.debug(msg),
       });
     }
+    core.debug(`Commited ${files.length} files`);
 
-    await getOrCreatePullRequest({
+    const pr = await getOrCreatePullRequest({
       client,
       owner,
       repo,
       branch: newBranch,
-      log: (msg) => core.info(msg),
+      title: prTitle,
+      log: (msg) => core.debug(msg),
     });
+    core.debug(`Created Pull Request #${pr.number} in ${owner}/${repo}`);
+    core.debug(`Pull Request link: ${pr.html_url}`);
   }
   catch (error) {
     core.setFailed(error.message);
@@ -7527,12 +7534,12 @@ const getOrCreatePullRequest = async (options) => {
     owner,
     repo,
     branch,
+    title,
     log,
   } = options;
 
   const head = `${owner}:${branch}`;
   const base = 'master';
-  const title = 'my-pr';
 
   const { data: pullRequest } =
     await client.pulls.list({
@@ -9157,7 +9164,7 @@ const createOrUpdateFile = async (options) => {
     log,
   } = options;
 
-  const message = 'commit message';
+  const message = `Commiting file ${file.path}`;
 
   const defaultParams = {
     owner,
