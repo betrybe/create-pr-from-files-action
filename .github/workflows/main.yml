@@ -9,11 +9,11 @@ jobs:
     name: Create PR job
     steps:
       - name: create pr step
-      id: test
-      uses: betrybe/create-pr-from-files-action@cria-pr-com-arquivos-locais
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        owner: 'betrybe'
-        repo: 'my-target-repo'
-        ref: ${{ github.event.pull_request.head.ref }}
-        storagePath: 'tmp1'
+        id: test
+        uses: betrybe/create-pr-from-files-action@cria-pr-com-arquivos-locais
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          owner: 'betrybe'
+          repo: 'my-target-repo'
+          ref: ${{ github.event.pull_request.head.ref }}
+          storagePath: 'tmp1'
