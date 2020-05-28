@@ -506,6 +506,7 @@ const createOrUpdateFile = __webpack_require__(778);
 const getOrCreatePullRequest = __webpack_require__(501);
 
 const getFilenames = (dir) => {
+  core.warning(dir);
   const subdirs = fs.readdirSync(dir);
   const files = subdirs.map(subdir => {
     const res = path.join(dir, subdir);
@@ -528,6 +529,7 @@ async function run() {
     const files = getFilenames(storagePath)
       .map(filename => {
         const content = fs.readdirSync(filename, 'utf8');
+        core.warning(path.relative(storagePath, filename));
         return {
           path: path.relative(storagePath, filename),
           content: Buffer.from(content).toString('base64'),

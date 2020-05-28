@@ -12,7 +12,7 @@ jobs:
       - run: ls -lahR tmp1
       - name: create pr step
         id: test
-        uses: betrybe/create-pr-from-files-action@cria-pr-com-arquivos-locais
+        uses: betrybe/create-pr-from-files-action@test-pr
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: 'betrybe'
