@@ -9,6 +9,7 @@ jobs:
     name: Create PR job
     steps:
       - uses: actions/checkout@v2
+      - run: ls -lahR tmp1
       - name: create pr step
         id: test
         uses: betrybe/create-pr-from-files-action@cria-pr-com-arquivos-locais
