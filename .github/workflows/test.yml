@@ -1,23 +1,23 @@
-name: "units-test"
+name: 'Create Pull Request'
 on:
   pull_request:
-  push:
-    branches:
-      - master
-      - 'releases/*'
+    types: [opened, synchronize]
 
 jobs:
-  # unit tests
-  units:
-    runs-on: ubuntu-latest
+  create:
+    runs-on: ubuntu-18.04
+    name: Create PR job
     steps:
-    - uses: actions/checkout@v1
-    - run: npm ci
-    - run: npm test
-
-  # test action works running from the graph
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: ./
+      - uses: actions/checkout@v2
+      - run: pwd
+      - run: ls -lah
+      - run: ls -lahR tmp1
+      - name: create pr step
+        id: test
+        uses: betrybe/create-pr-from-files-action@test-pull-request
+        with:
+          token: ${{ secrets.MY_TOKEN }}
+          owner: 'betrybe'
+          repo: 'my-target-repo'
+          ref: ${{ github.event.pull_request.head.ref }}
+          storagePath: './tmp1'
