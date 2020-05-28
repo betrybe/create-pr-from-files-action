@@ -23,9 +23,10 @@ async function run() {
     const repo = core.getInput('repo');
     const branch = core.getInput('branch') || github.context.ref;
     const storagePath = core.getInput('storagePath', { required: true });
+    const prefixBranch = core.getInput('prefixBranch', { required: true });
 
     const client = new github.GitHub(token);
-    const newBranch = `automation/${branch}`;
+    const newBranch = `${prefixBranch}/${branch}`;
 
     const files = getFilenames(storagePath)
       .map(filename => {

@@ -14,6 +14,10 @@ inputs:
     description: 'Local path to storage base files'
     required: true
     default: 'tmp'
+  prefixBranch:
+    description: 'Prefix to be added to branch that will be created'
+    required: true
+    default: 'automation'
 runs:
   using: 'node12'
   main: 'dist/index.js'

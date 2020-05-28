@@ -41,7 +41,12 @@ This action accepts the following configuration parameters via `with:`
   **Required**
   **Default: "tmp"**
 
-  Local path to storage base files
+  Prefix to be added to branch that will be created
+
+- `prefixBranch`
+
+  **Required**
+  **Default: "automation"**
 
 ## Example usage
 
