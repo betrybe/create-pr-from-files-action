@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pwd
+      - run: ls -lah
       - run: ls -lahR tmp1
       - name: create pr step
         id: test
