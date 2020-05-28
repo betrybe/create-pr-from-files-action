@@ -53,7 +53,7 @@ describe('createOrUpdateFile', () => {
       owner: 'my-org',
       repo: 'my-repo',
       path: 'wait.js',
-      message: 'commit message',
+      message: 'Commiting file wait.js',
       content: 'YmxhYmxhYmxhCg==',
       branch: 'my-branch',
     });
@@ -90,7 +90,7 @@ describe('createOrUpdateFile', () => {
     owner: 'my-org',
     repo: 'my-repo',
     path: 'wait.js',
-    message: 'commit message',
+    message: 'Commiting file wait.js',
     content: 'YmxhYmxhYmxhCg==',
     branch: 'my-branch',
     sha: '88bf17f4a6419d6f0c3b44bfa70c3e572ab938af',

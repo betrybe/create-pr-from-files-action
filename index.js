@@ -27,6 +27,7 @@ async function run() {
 
     const client = new github.GitHub(token);
     const newBranch = `${prefixBranch}/${branch}`;
+    const prTitle = `[AUTOMATION] ${branch}`;
 
     const files = getFilenames(storagePath)
       .map(filename => {
@@ -45,6 +46,7 @@ async function run() {
       branch: newBranch,
       log: (msg) => core.debug(msg),
     });
+    core.debug(`Created branch: ${owner}/${repo}@${newBranch}`);
 
     for (const file of files) {
       await createOrUpdateFile({
@@ -56,14 +58,18 @@ async function run() {
         log: (msg) => core.debug(msg),
       });
     }
+    core.debug(`Commited ${files.length} files`);
 
-    await getOrCreatePullRequest({
+    const pr = await getOrCreatePullRequest({
       client,
       owner,
       repo,
       branch: newBranch,
+      title: prTitle,
       log: (msg) => core.debug(msg),
     });
+    core.debug(`Created Pull Request #${pr.number} in ${owner}/${repo}`);
+    core.debug(`Pull Request link: ${pr.html_url}`);
   }
   catch (error) {
     core.setFailed(error.message);
