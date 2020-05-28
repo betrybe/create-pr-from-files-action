@@ -8,11 +8,19 @@ const createOrUpdateFile = require('./createOrUpdateFile');
 const getOrCreatePullRequest = require('./getOrCreatePullRequest');
 
 const getFilenames = (dir) => {
-  core.warning(dir);
+  core.debug(dir);
   const subdirs = fs.readdirSync(dir);
   const files = subdirs.map(subdir => {
     const res = path.join(dir, subdir);
-    return (fs.statSync(res)).isDirectory() ? getFilenames(res) : res;
+    // return (fs.statSync(res)).isDirectory() ? getFilenames(res) : res;
+    const isDirectory = fs.statSync(res).isDirectory();
+    core.debug(res);
+    core.debug(isDirectory)
+    if (isDirectory) {
+      return getFilenames(res)
+    } else {
+      return res;
+    }
   });
   return files.reduce((a, f) => a.concat(f), []);
 };
@@ -31,7 +39,7 @@ async function run() {
     const files = getFilenames(storagePath)
       .map(filename => {
         const content = fs.readdirSync(filename, 'utf8');
-        core.warning(path.relative(storagePath, filename));
+        core.debug(path.relative(storagePath, filename));
         return {
           path: path.relative(storagePath, filename),
           content: Buffer.from(content).toString('base64'),
