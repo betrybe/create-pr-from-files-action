@@ -43,7 +43,7 @@ async function run() {
       owner,
       repo,
       branch: newBranch,
-      log: (msg) => core.info(msg),
+      log: (msg) => core.debug(msg),
     });
 
     for (const file of files) {
@@ -53,7 +53,7 @@ async function run() {
         repo,
         branch: newBranch,
         file,
-        log: (msg) => core.info(msg),
+        log: (msg) => core.debug(msg),
       });
     }
 
@@ -62,7 +62,7 @@ async function run() {
       owner,
       repo,
       branch: newBranch,
-      log: (msg) => core.info(msg),
+      log: (msg) => core.debug(msg),
     });
   }
   catch (error) {
