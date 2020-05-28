@@ -38,7 +38,7 @@ async function run() {
 
     const files = getFilenames(storagePath)
       .map(filename => {
-        const content = fs.readdirSync(filename, 'utf8');
+        const content = fs.readFileSync(filename, 'utf8');
         core.debug(path.relative(storagePath, filename));
         return {
           path: path.relative(storagePath, filename),
