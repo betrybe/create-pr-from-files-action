@@ -18,4 +18,4 @@ jobs:
           owner: 'betrybe'
           repo: 'my-target-repo'
           ref: ${{ github.event.pull_request.head.ref }}
-          storagePath: 'tmp1'
+          storagePath: './tmp1'
