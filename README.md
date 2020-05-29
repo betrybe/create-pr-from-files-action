@@ -1,13 +1,66 @@
 
 <p align="center">
-  <a href="https://github.com/actions/javascript-action/actions"><img alt="javscript-action status" src="https://github.com/actions/javascript-action/workflows/units-test/badge.svg"></a>
+  <a href="https://github.com/betrybe/create-pr-from-files-action/actions"><img alt="javscript-action status" src="https://github.com/betrybe/create-pr-from-files-action/workflows/units-test/badge.svg"></a>
 </p>
+
+# GitHub Action: Create Pull Request from local files
+
+A GitHub action that create branch and Pull Request from local files and keep it syncronized.
+
+## Inputs
+
+This action accepts the following configuration parameters via `with:`
+
+- `token`
+
+  **Required**
+
+  The GitHub token to use for making API requests
+
+- `owner`
+
+  **Required**
+
+  The owner of the GitHub repository you want to create Pull Request
+
+- `repo`
+
+  **Required**
+
+  The name of the GitHub repository you want to create Pull Request
+
+- `branch`
+
+  **Required**
+  **Default: `github.ref`**
+
+  The name of the branch you want to create Pull Request head to
+
+- `storagePath`
+
+  **Required**
+  **Default: "tmp"**
+
+  Prefix to be added to branch that will be created
+
+- `prefixBranch`
+
+  **Required**
+  **Default: "automation"**
+
+## Example usage
+
+```yaml
+steps:
+  - name: Create PR from files
+    uses: betrybe/create-pr-from-files-action
+```
 
 # Create a JavaScript Action
 
 Use this template to bootstrap the creation of a JavaScript action.:rocket:
 
-This template includes tests, linting, a validation workflow, publishing, and versioning guidance.  
+This template includes tests, linting, a validation workflow, publishing, and versioning guidance.
 
 If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
 
@@ -17,21 +70,14 @@ Click the `Use this Template` and provide the new repo details for your action
 
 ## Code in Master
 
-Install the dependencies  
+Install the dependencies
 ```bash
 $ npm install
 ```
 
-Run the tests :heavy_check_mark:  
+Run the tests :heavy_check_mark:
 ```bash
 $ npm test
-
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-
-...
 ```
 
 ## Change action.yml
@@ -51,9 +97,9 @@ const core = require('@actions/core');
 ...
 
 async function run() {
-  try { 
+  try {
       ...
-  } 
+  }
   catch (error) {
     core.setFailed(error.message);
   }
@@ -97,7 +143,7 @@ $ git commit -a -m "v1 release"
 $ git push origin v1
 ```
 
-Your action is now published! :rocket: 
+Your action is now published! :rocket:
 
 See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
 
@@ -106,9 +152,7 @@ See the [versioning documentation](https://github.com/actions/toolkit/blob/maste
 You can now consume the action by referencing the v1 branch
 
 ```yaml
-uses: actions/javascript-action@v1
-with:
-  milliseconds: 1000
+uses: betrybe/create-pr-from-files-action@v1
 ```
 
-See the [actions tab](https://github.com/actions/javascript-action/actions) for runs of this action! :rocket:
+See the [actions tab](https://github.com/betrybe/create-pr-from-files-action/actions) for runs of this action! :rocket:

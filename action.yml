@@ -1,13 +1,23 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Create Pull Request from local files'
+description: 'Create branch and Pull Request from local files'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  token:
+    description: 'The GitHub token to use for making API requests'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps 
-    description: 'The message to output'
+  owner:
+    description: 'The owner of the GitHub repository you want to create Pull Request'
+  repo:
+    description: 'The name of the GitHub repository you want to create Pull Request'
+  branch:
+    description: 'The name of the branch you want to create Pull Request head to'
+  storagePath:
+    description: 'Local path to storage base files'
+    required: true
+    default: 'tmp'
+  prefixBranch:
+    description: 'Prefix to be added to branch that will be created'
+    required: true
+    default: 'automation'
 runs:
   using: 'node12'
   main: 'dist/index.js'
