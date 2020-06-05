@@ -6,6 +6,8 @@ const path = require('path');
 const getOrCreateBranch = require('./getOrCreateBranch');
 const createOrUpdateFile = require('./createOrUpdateFile');
 const getOrCreatePullRequest = require('./getOrCreatePullRequest');
+const getFilenamesFromEncodedArray = require('./getFilenamesFromEncodedArray');
+const deleteFile = require('./deleteFile');
 
 const getFilenames = (dir) => {
   const subdirs = fs.readdirSync(dir);
@@ -24,10 +26,12 @@ async function run() {
     const branch = core.getInput('branch') || github.context.ref;
     const storagePath = core.getInput('storagePath', { required: true });
     const prefixBranch = core.getInput('prefixBranch', { required: true });
+    const encodedRemovedFilenames = core.getInput('encodedRemovedFilenames') || [];
 
     const client = new github.GitHub(token);
     const newBranch = `${prefixBranch}/${branch}`;
     const prTitle = `[AUTOMATION] ${branch}`;
+    const removedFilenames = getFilenamesFromEncodedArray(encodedRemovedFilenames);
 
     const files = getFilenames(storagePath)
       .map(filename => {
@@ -59,6 +63,18 @@ async function run() {
       });
     }
     core.debug(`Commited ${files.length} files`);
+
+    for (const filename of removedFilenames) {
+      await deleteFile({
+        client,
+        owner,
+        repo,
+        path: filename,
+        branch: newBranch,
+        log: (msg) => core.debug(msg),
+      });
+    }
+    core.debug(`Deleted ${removedFilenames.length} files`);
 
     const pr = await getOrCreatePullRequest({
       client,

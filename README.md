@@ -48,6 +48,15 @@ This action accepts the following configuration parameters via `with:`
   **Required**
   **Default: "automation"**
 
+- `encodedRemovedFilenames`
+
+  Encoded Base64 string that contains the name of the removed files.
+
+  After decoding the array should be something like this:
+  ```json
+  ["filename1.json", "content/name.md", "/static/images/play.png"]
+  ```
+
 ## Example usage
 
 ```yaml

@@ -504,6 +504,8 @@ const path = __webpack_require__(622);
 const getOrCreateBranch = __webpack_require__(626);
 const createOrUpdateFile = __webpack_require__(778);
 const getOrCreatePullRequest = __webpack_require__(501);
+const getFilenamesFromEncodedArray = __webpack_require__(981);
+const deleteFile = __webpack_require__(133);
 
 const getFilenames = (dir) => {
   const subdirs = fs.readdirSync(dir);
@@ -522,10 +524,12 @@ async function run() {
     const branch = core.getInput('branch') || github.context.ref;
     const storagePath = core.getInput('storagePath', { required: true });
     const prefixBranch = core.getInput('prefixBranch', { required: true });
+    const encodedRemovedFilenames = core.getInput('encodedRemovedFilenames') || [];
 
     const client = new github.GitHub(token);
     const newBranch = `${prefixBranch}/${branch}`;
     const prTitle = `[AUTOMATION] ${branch}`;
+    const removedFilenames = getFilenamesFromEncodedArray(encodedRemovedFilenames);
 
     const files = getFilenames(storagePath)
       .map(filename => {
@@ -557,6 +561,18 @@ async function run() {
       });
     }
     core.debug(`Commited ${files.length} files`);
+
+    for (const filename of removedFilenames) {
+      await deleteFile({
+        client,
+        owner,
+        repo,
+        path: filename,
+        branch: newBranch,
+        log: (msg) => core.debug(msg),
+      });
+    }
+    core.debug(`Deleted ${removedFilenames.length} files`);
 
     const pr = await getOrCreatePullRequest({
       client,
@@ -1526,6 +1542,45 @@ module.exports = uniq;
 /***/ (function(module) {
 
 module.exports = require("child_process");
+
+/***/ }),
+
+/***/ 133:
+/***/ (function(module) {
+
+const deleteFile = async (options) => {
+  const {
+    client,
+    owner,
+    repo,
+    path,
+    branch,
+    log,
+  } = options;
+
+  const message = `Deleting file ${path}`;
+
+  await client.repos.getContents({
+    owner,
+    repo,
+    path,
+    ref: branch
+  }).then(({ data }) => {
+    return client.repos.deleteFile({
+      owner,
+      repo,
+      path,
+      message,
+      sha: data.sha,
+      branch
+    });
+  }).catch(() => {
+    return Promise.resolve();
+  });
+};
+
+module.exports = deleteFile;
+
 
 /***/ }),
 
@@ -25563,6 +25618,20 @@ function onceStrict (fn) {
   f.called = false
   return f
 }
+
+
+/***/ }),
+
+/***/ 981:
+/***/ (function(module) {
+
+const getFilenamesFromEncodedArray = (encodedArray) => {
+  const decoded = Buffer.from(encodedArray, 'base64').toString();
+  if (!decoded) return [];
+  return decoded.split(',');
+};
+
+module.exports = getFilenamesFromEncodedArray;
 
 
 /***/ })
