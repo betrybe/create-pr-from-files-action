@@ -27,6 +27,7 @@ async function run() {
     const storagePath = core.getInput('storagePath', { required: true });
     const prefixBranch = core.getInput('prefixBranch', { required: true });
     const encodedRemovedFilenames = core.getInput('encodedRemovedFilenames') || [];
+    const prefixPathForRemovedFiles = core.getInput('prefixPathForRemovedFiles') || '';
 
     const client = new github.GitHub(token);
     const newBranch = `${prefixBranch}/${branch}`;
@@ -69,7 +70,7 @@ async function run() {
         client,
         owner,
         repo,
-        path: filename,
+        path: path.join(prefixPathForRemovedFiles, filename),
         branch: newBranch,
         log: (msg) => core.debug(msg),
       });

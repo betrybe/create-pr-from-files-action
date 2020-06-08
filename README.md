@@ -41,12 +41,14 @@ This action accepts the following configuration parameters via `with:`
   **Required**
   **Default: "tmp"**
 
-  Prefix to be added to branch that will be created
+  Local path to storage base files
 
 - `prefixBranch`
 
   **Required**
   **Default: "automation"**
+
+  Prefix to be added to branch that will be created
 
 - `encodedRemovedFilenames`
 
@@ -56,6 +58,10 @@ This action accepts the following configuration parameters via `with:`
   ```json
   ["filename1.json", "content/name.md", "/static/images/play.png"]
   ```
+
+- `prefixPathForRemovedFiles`
+
+  Prefix path to be append to removed files
 
 ## Example usage
 
