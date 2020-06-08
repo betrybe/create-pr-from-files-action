@@ -18,6 +18,8 @@ inputs:
     description: 'Prefix to be added to branch that will be created'
     required: true
     default: 'automation'
+  encodedRemovedFilenames:
+    description: 'Encoded Base64 string that contains the name of the removed files'
 runs:
   using: 'node12'
   main: 'dist/index.js'
