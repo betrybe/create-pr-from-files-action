@@ -505,6 +505,7 @@ const getOrCreateBranch = __webpack_require__(626);
 const createOrUpdateFile = __webpack_require__(778);
 const getOrCreatePullRequest = __webpack_require__(501);
 const getFilenamesFromEncodedArray = __webpack_require__(981);
+const convertFile = __webpack_require__(685);
 const deleteFile = __webpack_require__(133);
 
 const getFilenames = (dir) => {
@@ -525,6 +526,7 @@ async function run() {
     const storagePath = core.getInput('storagePath', { required: true });
     const prefixBranch = core.getInput('prefixBranch', { required: true });
     const encodedRemovedFilenames = core.getInput('encodedRemovedFilenames') || [];
+    const prefixPathForRemovedFiles = core.getInput('prefixPathForRemovedFiles') || '';
 
     const client = new github.GitHub(token);
     const newBranch = `${prefixBranch}/${branch}`;
@@ -562,7 +564,14 @@ async function run() {
     }
     core.debug(`Commited ${files.length} files`);
 
-    for (const filename of removedFilenames) {
+    const parsedFilenames = removedFilenames
+      .map(file => convertFile(prefixPathForRemovedFiles, file))
+      .flat();
+
+    core.debug(removedFilenames);
+    core.debug(parsedFilenames);
+
+    for (const filename of parsedFilenames) {
       await deleteFile({
         client,
         owner,
@@ -572,7 +581,7 @@ async function run() {
         log: (msg) => core.debug(msg),
       });
     }
-    core.debug(`Deleted ${removedFilenames.length} files`);
+    core.debug(`Deleted ${parsedFilenames.length} files`);
 
     const pr = await getOrCreatePullRequest({
       client,
@@ -8800,6 +8809,31 @@ function authenticate(state, options) {
 module.exports = function btoa(str) {
   return new Buffer(str).toString('base64')
 }
+
+
+/***/ }),
+
+/***/ 685:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const path = __webpack_require__(622);
+
+const convertFile = (prefix, filename) => {
+  const parsed = path.parse(filename);
+  if (parsed.ext === '.md') return convertMarkdownFile(prefix, parsed);
+  if (['.png', '.jpeg'].some(i => i === parsed.ext)) return convertImage(filename);
+};
+
+const convertMarkdownFile = (prefix, { dir, _base, ext, name }) => ([
+  path.join(prefix, dir, `${name}.html${ext}`),
+  path.join(prefix, dir, `${name}.yaml`),
+]);
+
+const convertImage = (filename) => ([
+  filename.replace('content/', 'assets/static/')
+]);
+
+module.exports = convertFile;
 
 
 /***/ }),
