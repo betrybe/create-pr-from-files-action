@@ -70,6 +70,9 @@ async function run() {
       .map(file => convertFile(prefixPathForRemovedFiles, file))
       .flat();
 
+    core.debug(removedFilenames);
+    core.debug(parsedFilenames);
+
     for (const filename of parsedFilenames) {
       await deleteFile({
         client,
