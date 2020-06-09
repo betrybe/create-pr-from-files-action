@@ -7,6 +7,7 @@ const getOrCreateBranch = require('./getOrCreateBranch');
 const createOrUpdateFile = require('./createOrUpdateFile');
 const getOrCreatePullRequest = require('./getOrCreatePullRequest');
 const getFilenamesFromEncodedArray = require('./getFilenamesFromEncodedArray');
+const convertFile = require('./convertFile');
 const deleteFile = require('./deleteFile');
 
 const getFilenames = (dir) => {
@@ -27,6 +28,7 @@ async function run() {
     const storagePath = core.getInput('storagePath', { required: true });
     const prefixBranch = core.getInput('prefixBranch', { required: true });
     const encodedRemovedFilenames = core.getInput('encodedRemovedFilenames') || [];
+    const prefixPathForRemovedFiles = core.getInput('prefixPathForRemovedFiles') || '';
 
     const client = new github.GitHub(token);
     const newBranch = `${prefixBranch}/${branch}`;
@@ -64,7 +66,14 @@ async function run() {
     }
     core.debug(`Commited ${files.length} files`);
 
-    for (const filename of removedFilenames) {
+    const parsedFilenames = removedFilenames
+      .map(file => convertFile(prefixPathForRemovedFiles, file))
+      .flat();
+
+    core.debug(removedFilenames);
+    core.debug(parsedFilenames);
+
+    for (const filename of parsedFilenames) {
       await deleteFile({
         client,
         owner,
@@ -74,7 +83,7 @@ async function run() {
         log: (msg) => core.debug(msg),
       });
     }
-    core.debug(`Deleted ${removedFilenames.length} files`);
+    core.debug(`Deleted ${parsedFilenames.length} files`);
 
     const pr = await getOrCreatePullRequest({
       client,
