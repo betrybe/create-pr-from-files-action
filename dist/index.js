@@ -543,6 +543,11 @@ async function run() {
       }
     );
 
+    if (files.length === 0 && removedFilenames.length === 0) {
+      core.debug('No files to add or remove');
+      return;
+    }
+
     await getOrCreateBranch({
       client,
       owner,
