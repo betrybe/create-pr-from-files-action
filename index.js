@@ -45,65 +45,61 @@ async function run() {
       }
     );
 
-    if (files.length === 0 && removedFilenames.length === 0) {
+    if (files.length > 0 || removedFilenames.length > 0) {
+      await getOrCreateBranch({
+        client,
+        owner,
+        repo,
+        branch: newBranch,
+        log: (msg) => core.debug(msg),
+      });
+      core.debug(`Created branch: ${owner}/${repo}@${newBranch}`);
+
+      for (const file of files) {
+        await createOrUpdateFile({
+          client,
+          owner,
+          repo,
+          branch: newBranch,
+          file,
+          log: (msg) => core.debug(msg),
+        });
+      }
+      core.debug(`Commited ${files.length} files`);
+
+      const parsedFilenames = removedFilenames
+        .map(file => convertFile(prefixPathForRemovedFiles, file))
+        .flat();
+
+      for (const filename of parsedFilenames) {
+        await deleteFile({
+          client,
+          owner,
+          repo,
+          path: filename,
+          branch: newBranch,
+          log: (msg) => core.debug(msg),
+        });
+      }
+      core.debug(`Deleted ${parsedFilenames.length} files`);
+
+      const pr = await getOrCreatePullRequest({
+        client,
+        owner,
+        repo,
+        branch: newBranch,
+        title: prTitle,
+        log: (msg) => core.debug(msg),
+      });
+      core.debug(`Created Pull Request #${pr.number} in ${owner}/${repo}`);
+      core.debug(`Pull Request link: ${pr.html_url}`);
+    } else {
       core.debug('No files to add or remove');
-      return;
     }
-
-    await getOrCreateBranch({
-      client,
-      owner,
-      repo,
-      branch: newBranch,
-      log: (msg) => core.debug(msg),
-    });
-    core.debug(`Created branch: ${owner}/${repo}@${newBranch}`);
-
-    for (const file of files) {
-      await createOrUpdateFile({
-        client,
-        owner,
-        repo,
-        branch: newBranch,
-        file,
-        log: (msg) => core.debug(msg),
-      });
-    }
-    core.debug(`Commited ${files.length} files`);
-
-    const parsedFilenames = removedFilenames
-      .map(file => convertFile(prefixPathForRemovedFiles, file))
-      .flat();
-
-    core.debug(removedFilenames);
-    core.debug(parsedFilenames);
-
-    for (const filename of parsedFilenames) {
-      await deleteFile({
-        client,
-        owner,
-        repo,
-        path: filename,
-        branch: newBranch,
-        log: (msg) => core.debug(msg),
-      });
-    }
-    core.debug(`Deleted ${parsedFilenames.length} files`);
-
-    const pr = await getOrCreatePullRequest({
-      client,
-      owner,
-      repo,
-      branch: newBranch,
-      title: prTitle,
-      log: (msg) => core.debug(msg),
-    });
-    core.debug(`Created Pull Request #${pr.number} in ${owner}/${repo}`);
-    core.debug(`Pull Request link: ${pr.html_url}`);
   }
   catch (error) {
     core.setFailed(error.message);
   }
 }
 
-await run();
+run();
