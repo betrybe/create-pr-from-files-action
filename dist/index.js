@@ -535,7 +535,7 @@ async function run() {
 
     const files = getFilenames(storagePath)
       .map(filename => {
-        const content = fs.readFileSync(filename, 'utf8');
+        const content = fs.readFileSync(filename, 'binary');
         return {
           path: path.relative(storagePath, filename),
           content: Buffer.from(content).toString('base64'),
