@@ -35,6 +35,11 @@ async function run() {
     const prTitle = `[AUTOMATION] ${branch}`;
     const removedFilenames = getFilenamesFromEncodedArray(encodedRemovedFilenames);
 
+    const { repo: source, issue } = github.context;
+    const sourceOwner = source.owner;
+    const sourceRepo = source.repo;
+    const sourcePR = issue.number;
+
     const files = getFilenames(storagePath)
       .map(filename => {
         const content = fs.readFileSync(filename, 'binary');
@@ -100,6 +105,13 @@ async function run() {
     });
     core.debug(`Created Pull Request #${pr.number} in ${owner}/${repo}`);
     core.debug(`Pull Request link: ${pr.html_url}`);
+
+    await client.issues.createComment({
+      owner: sourceOwner,
+      repo: sourceRepo,
+      issue_number: parseInt(sourcePR),
+      body: `Seu _Pull Request_ no [betrybe/trybe](https://github.com/betrybe/trybe) pode ser acessado por [aqui](${pr.html_url}).`
+    });
   }
   catch (error) {
     core.setFailed(error.message);
