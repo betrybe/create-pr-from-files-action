@@ -33,9 +33,9 @@ async function run() {
 
     const client = new github.GitHub(token);
 
-    const { pullRequest } = github.context.payload;
+    const { pull_request } = github.context.payload;
 
-    if (excludeDrafts && pullRequest.draft) return;
+    if (excludeDrafts && pull_request.draft) return;
 
 
     console.log('aqui é apenas para não drafts');
