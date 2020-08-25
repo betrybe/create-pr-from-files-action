@@ -533,6 +533,10 @@ async function run() {
 
     const { pull_request } = github.context.payload;
 
+    core.debug('aqui é antes da verificação');
+    core.debug(excludeDrafts);
+    core.debug(pull_request.draft);
+
 
     if (excludeDrafts && pull_request.draft) return;
 
