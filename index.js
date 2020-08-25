@@ -38,7 +38,7 @@ async function run() {
     if (excludeDrafts && pull_request.draft) return;
 
 
-    console.log('aqui é apenas para não drafts');
+    core.debug('aqui é apenas para não drafts');
 
     /*
     const newBranch = `${prefixBranch}/${branch}`;
