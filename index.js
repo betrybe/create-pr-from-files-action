@@ -29,7 +29,7 @@ async function run() {
     const prefixBranch = core.getInput('prefixBranch', { required: true });
     const encodedRemovedFilenames = core.getInput('encodedRemovedFilenames') || [];
     const prefixPathForRemovedFiles = core.getInput('prefixPathForRemovedFiles') || '';
-    const excludeDrafts = core.getInput('excludeDrafts');
+    const excludeDrafts = Boolean(core.getInput('excludeDrafts'));
 
     const client = new github.GitHub(token);
 
