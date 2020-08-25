@@ -29,10 +29,16 @@ async function run() {
     const prefixBranch = core.getInput('prefixBranch', { required: true });
     const encodedRemovedFilenames = core.getInput('encodedRemovedFilenames') || [];
     const prefixPathForRemovedFiles = core.getInput('prefixPathForRemovedFiles') || '';
+    const excludeDrafts = core.getInput('excludeDrafts');
 
     const client = new github.GitHub(token);
 
-    console.log(github.context.payload.pull_request);
+    const { pullRequest } = github.context.payload;
+
+    if (excludeDrafts && pullRequest.draft) return;
+
+
+    console.log('aqui é apenas para não drafts');
 
     /*
     const newBranch = `${prefixBranch}/${branch}`;
