@@ -538,7 +538,10 @@ async function run() {
     core.debug(pull_request.draft);
 
 
-    if (excludeDrafts && pull_request.draft) return;
+    if (excludeDrafts && pull_request.draft) {
+      console.log('retorna');
+      return;
+    }
 
     console.log(pull_request);
     console.log(pull_request.draft);
