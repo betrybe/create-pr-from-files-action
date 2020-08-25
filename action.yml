@@ -22,6 +22,9 @@ inputs:
     description: 'Encoded Base64 string that contains the name of the removed files'
   prefixPathForRemovedFiles:
     description: 'Prefix path to be append to removed files'
+  excludeDraft:
+    description: 'Exclude drafts to run convertion if true'
+    default: false
 runs:
   using: 'node12'
   main: 'dist/index.js'

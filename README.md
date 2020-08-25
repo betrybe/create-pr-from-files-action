@@ -63,6 +63,12 @@ This action accepts the following configuration parameters via `with:`
 
   Prefix path to be append to removed files
 
+- `excludeDrafts`
+
+  **Default: false**
+
+  Exclude drafts to run convertion if true
+
 ## Example usage
 
 ```yaml

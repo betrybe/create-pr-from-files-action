@@ -527,11 +527,19 @@ async function run() {
     const prefixBranch = core.getInput('prefixBranch', { required: true });
     const encodedRemovedFilenames = core.getInput('encodedRemovedFilenames') || [];
     const prefixPathForRemovedFiles = core.getInput('prefixPathForRemovedFiles') || '';
+    const excludeDrafts = (core.getInput('excludeDrafts') === 'true');
 
     const client = new github.GitHub(token);
     const newBranch = `${prefixBranch}/${branch}`;
     const prTitle = `[AUTOMATION] ${branch}`;
     const removedFilenames = getFilenamesFromEncodedArray(encodedRemovedFilenames);
+
+    const { pull_request } = github.context.payload;
+
+    if (excludeDrafts && pull_request.draft) {
+      core.debug('PR is a draft and configuration was set to ignore it');
+      return;
+    }
 
     const files = getFilenames(storagePath)
       .map(filename => {
