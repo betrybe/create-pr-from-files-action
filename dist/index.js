@@ -529,6 +529,11 @@ async function run() {
     const prefixPathForRemovedFiles = core.getInput('prefixPathForRemovedFiles') || '';
 
     const client = new github.GitHub(token);
+
+    console.log(github.context);
+    console.log(github.event);
+
+    /*
     const newBranch = `${prefixBranch}/${branch}`;
     const prTitle = `[AUTOMATION] ${branch}`;
     const removedFilenames = getFilenamesFromEncodedArray(encodedRemovedFilenames);
@@ -598,6 +603,7 @@ async function run() {
     });
     core.debug(`Created Pull Request #${pr.number} in ${owner}/${repo}`);
     core.debug(`Pull Request link: ${pr.html_url}`);
+  */
   }
   catch (error) {
     core.setFailed(error.message);
