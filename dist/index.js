@@ -535,7 +535,9 @@ async function run() {
 
     core.debug('aqui é antes da verificação');
     core.debug(excludeDrafts);
+    core.debug(typeof(excludeDrafts));
     core.debug(pull_request.draft);
+    core.debug(typeof(pull_request.draft));
 
 
     if (excludeDrafts && pull_request.draft) {
