@@ -533,8 +533,11 @@ async function run() {
 
     const { pull_request } = github.context.payload;
 
+
     if (excludeDrafts && pull_request.draft) return;
 
+    console.log(pull_request);
+    console.log(pull_request.draft);
 
     core.debug('aqui é apenas para não drafts');
 

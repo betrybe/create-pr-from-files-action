@@ -65,7 +65,7 @@ This action accepts the following configuration parameters via `with:`
 
 - `excludeDrafts`
 
-  **Default: true**
+  **Default: false**
 
   Do not run on draft PRs
 
