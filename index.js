@@ -32,8 +32,7 @@ async function run() {
 
     const client = new github.GitHub(token);
 
-    console.log(github.context);
-    console.log(github.event);
+    console.log(github.context.payload.pull_request);
 
     /*
     const newBranch = `${prefixBranch}/${branch}`;
