@@ -63,6 +63,12 @@ This action accepts the following configuration parameters via `with:`
 
   Prefix path to be append to removed files
 
+## Outputs
+
+- `pr_url`
+
+  The url for the created Pull Request.
+
 ## Example usage
 
 ```yaml
