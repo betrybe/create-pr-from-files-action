@@ -65,7 +65,7 @@ This action accepts the following configuration parameters via `with:`
 
 ## Outputs
 
-- `pr_url`
+- `prUrl`
 
   The url for the created Pull Request.
 
