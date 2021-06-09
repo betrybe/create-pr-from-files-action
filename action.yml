@@ -23,7 +23,7 @@ inputs:
   prefixPathForRemovedFiles:
     description: 'Prefix path to be append to removed files'
 outputs:
-  pr_url:
+  prUrl:
     description: 'The url for the created Pull Request.'
 runs:
   using: 'node12'

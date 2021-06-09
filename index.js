@@ -100,7 +100,7 @@ async function run() {
     });
     core.debug(`Created Pull Request #${pr.number} in ${owner}/${repo}`);
     core.debug(`Pull Request link: ${pr.html_url}`);
-    core.setOutput('pr_url', pr.html_url);
+    core.setOutput('prUrl', pr.html_url);
   }
   catch (error) {
     core.setFailed(error.message);
