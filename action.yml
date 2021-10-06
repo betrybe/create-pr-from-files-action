@@ -22,6 +22,9 @@ inputs:
     description: 'Encoded Base64 string that contains the name of the removed files'
   prefixPathForRemovedFiles:
     description: 'Prefix path to be append to removed files'
+outputs:
+  prUrl:
+    description: 'The url for the created Pull Request.'
 runs:
   using: 'node12'
   main: 'dist/index.js'
