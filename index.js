@@ -35,7 +35,7 @@ async function run() {
     const prTitle = `[AUTOMATION] ${branch}`;
     const removedFilenames = getFilenamesFromEncodedArray(encodedRemovedFilenames);
 
-    const { default_branch: base_branch } = client.rest.repos.get({
+    const { default_branch: base_branch } = client.repos.get({
       owner,
       repo,
     });
