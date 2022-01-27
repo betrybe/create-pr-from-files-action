@@ -35,6 +35,11 @@ async function run() {
     const prTitle = `[AUTOMATION] ${branch}`;
     const removedFilenames = getFilenamesFromEncodedArray(encodedRemovedFilenames);
 
+    const { default_branch: base_branch } = client.rest.repos.get({
+      owner,
+      repo,
+    });
+
     const files = getFilenames(storagePath)
       .map(filename => {
         const content = fs.readFileSync(filename, 'binary');
@@ -55,6 +60,7 @@ async function run() {
       owner,
       repo,
       branch: newBranch,
+      base_branch,
       log: (msg) => core.debug(msg),
     });
     core.debug(`Created branch: ${owner}/${repo}@${newBranch}`);
@@ -96,6 +102,7 @@ async function run() {
       repo,
       branch: newBranch,
       title: prTitle,
+      base_branch,
       log: (msg) => core.debug(msg),
     });
     core.debug(`Created Pull Request #${pr.number} in ${owner}/${repo}`);

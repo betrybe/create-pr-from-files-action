@@ -533,6 +533,11 @@ async function run() {
     const prTitle = `[AUTOMATION] ${branch}`;
     const removedFilenames = getFilenamesFromEncodedArray(encodedRemovedFilenames);
 
+    const { default_branch: base_branch } = client.rest.repos.get({
+      owner,
+      repo,
+    });
+
     const files = getFilenames(storagePath)
       .map(filename => {
         const content = fs.readFileSync(filename, 'binary');
@@ -553,6 +558,7 @@ async function run() {
       owner,
       repo,
       branch: newBranch,
+      base_branch,
       log: (msg) => core.debug(msg),
     });
     core.debug(`Created branch: ${owner}/${repo}@${newBranch}`);
@@ -594,6 +600,7 @@ async function run() {
       repo,
       branch: newBranch,
       title: prTitle,
+      base_branch,
       log: (msg) => core.debug(msg),
     });
     core.debug(`Created Pull Request #${pr.number} in ${owner}/${repo}`);
@@ -7605,18 +7612,17 @@ const getOrCreatePullRequest = async (options) => {
     repo,
     branch,
     title,
-    log,
+    base_branch
   } = options;
 
   const head = `${owner}:${branch}`;
-  const base = 'master';
 
   const { data: pullRequest } =
     await client.pulls.list({
       owner,
       repo,
       head,
-      base,
+      base_branch,
     }).then(result => {
       const [pullRequest] = result.data;
       if (!pullRequest) throw new Error('Empty list of Pull Requests');
@@ -7631,7 +7637,7 @@ const getOrCreatePullRequest = async (options) => {
         repo,
         title,
         head,
-        base,
+        base_branch,
       });
     });
 
@@ -8631,7 +8637,7 @@ const getOrCreateBranch = async (options) => {
     owner,
     repo,
     branch,
-    log,
+    base_branch,
   } = options;
 
   const { data: reference } =
@@ -8640,17 +8646,17 @@ const getOrCreateBranch = async (options) => {
       repo,
       ref: `heads/${branch}`,
     }).catch(async () => {
-      const { data: master } =
+      const { data: base } =
         await client.git.getRef({
           owner,
           repo,
-          ref: 'heads/master',
+          ref: `heads/${base_branch}`,
         });
         return await client.git.createRef({
           owner,
           repo,
           ref: `refs/heads/${branch}`,
-          sha: master.object.sha,
+          sha: base.object.sha,
         });
     });
 

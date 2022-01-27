@@ -12,7 +12,8 @@ const run = () => {
     client,
     owner: 'my-org',
     repo: 'my-repo',
-    branch: 'master',
+    branch: 'main',
+    default_branch: 'main',
     log: () => {},
   });
 };
@@ -25,7 +26,7 @@ describe('getOrCreateBranch', () => {
   it('get already created branch', async () => {
     client.git.getRef.mockResolvedValue({
       data: {
-        ref: 'refs/heads/master',
+        ref: 'refs/heads/main',
         object: {
           sha: '322224cf7844e576400454f15db4164d42d81c12'
         }
@@ -34,7 +35,7 @@ describe('getOrCreateBranch', () => {
 
     const ref = await run();
     expect(client.git.getRef).toHaveBeenCalled();
-    expect(ref.ref).toBe('refs/heads/master');
+    expect(ref.ref).toBe('refs/heads/main');
   });
 
   it('create branch and get its data', async () => {
@@ -45,7 +46,7 @@ describe('getOrCreateBranch', () => {
       .mockImplementationOnce(() => {
         return {
           data: {
-            ref: 'refs/heads/master',
+            ref: 'refs/heads/main',
             object: {
               sha: '322224cf7844e576400454f15db4164d42d81c12'
             }
