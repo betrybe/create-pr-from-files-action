@@ -7,7 +7,8 @@
     "lint": "eslint index.js",
     "package": "ncc build index.js -o dist",
     "test": "eslint index.js && jest",
-    "test:watch": "eslint index.js && jest --watchAll"
+    "test:watch": "eslint index.js && jest --watchAll",
+    "preinstall": "git config core.hooksPath .githooks"
   },
   "jest": {
     "testTimeout": 60000
