@@ -4,7 +4,7 @@ const getOrCreateBranch = async (options) => {
     owner,
     repo,
     branch,
-    log,
+    base_branch,
   } = options;
 
   const { data: reference } =
@@ -13,17 +13,17 @@ const getOrCreateBranch = async (options) => {
       repo,
       ref: `heads/${branch}`,
     }).catch(async () => {
-      const { data: master } =
+      const { data: base } =
         await client.git.getRef({
           owner,
           repo,
-          ref: 'heads/master',
+          ref: `heads/${base_branch}`,
         });
         return await client.git.createRef({
           owner,
           repo,
           ref: `refs/heads/${branch}`,
-          sha: master.object.sha,
+          sha: base.object.sha,
         });
     });
 

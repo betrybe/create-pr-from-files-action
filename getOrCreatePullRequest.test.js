@@ -12,7 +12,8 @@ const run = () => {
     client,
     owner: 'my-org',
     repo: 'my-repo',
-    branch: 'master',
+    branch: 'main',
+    default_branch: 'main',
     title: 'my-tile',
     log: () => {},
   });

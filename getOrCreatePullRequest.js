@@ -5,18 +5,17 @@ const getOrCreatePullRequest = async (options) => {
     repo,
     branch,
     title,
-    log,
+    base_branch
   } = options;
 
   const head = `${owner}:${branch}`;
-  const base = 'master';
 
   const { data: pullRequest } =
     await client.pulls.list({
       owner,
       repo,
       head,
-      base,
+      base_branch,
     }).then(result => {
       const [pullRequest] = result.data;
       if (!pullRequest) throw new Error('Empty list of Pull Requests');
@@ -31,7 +30,7 @@ const getOrCreatePullRequest = async (options) => {
         repo,
         title,
         head,
-        base,
+        base_branch,
       });
     });
 
