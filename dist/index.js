@@ -558,6 +558,7 @@ async function run() {
       owner,
       repo,
       branch: newBranch,
+      base_branch,
       log: (msg) => core.debug(msg),
     });
     core.debug(`Created branch: ${owner}/${repo}@${newBranch}`);
