@@ -39,6 +39,8 @@ async function run() {
       owner,
       repo,
     });
+    core.debug(`New branch: ${newBranch}`)
+    core.debug(`Base branch: ${base_branch}`)
 
     const files = getFilenames(storagePath)
       .map(filename => {

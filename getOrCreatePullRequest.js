@@ -15,7 +15,7 @@ const getOrCreatePullRequest = async (options) => {
       owner,
       repo,
       head,
-      base_branch,
+      base: base_branch,
     }).then(result => {
       const [pullRequest] = result.data;
       if (!pullRequest) throw new Error('Empty list of Pull Requests');
@@ -30,7 +30,7 @@ const getOrCreatePullRequest = async (options) => {
         repo,
         title,
         head,
-        base_branch,
+        base: base_branch,
       });
     });
 
